@@ -92,7 +92,7 @@ public class WeatherActivity extends AppCompatActivity {
         if (bingPic != null){
             Glide.with(this).load(bingPic).into(bingPicImg);
         }else {
-
+            loadBingPic();  // 没有读取到则加载
         }
     }
 
@@ -135,6 +135,7 @@ public class WeatherActivity extends AppCompatActivity {
                 });
             }
         });
+        loadBingPic();
     }
 
     /**
@@ -188,6 +189,9 @@ public class WeatherActivity extends AppCompatActivity {
         weatherLayout.setVisibility(View.VISIBLE);  //将天气信息设置为可见
     }
 
+    /**
+     * 加载必应每日一图
+     */
     private void loadBingPic(){
         String requestBingPic = "http://guolin.tech/api/bing_pic";
         HttpUtil.sendOkHttpRequest(requestBingPic, new Callback() {
@@ -198,14 +202,14 @@ public class WeatherActivity extends AppCompatActivity {
 
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                final String bingPic = response.body().string();
+                final String bingPic = response.body().string();    // 获取背景图链接
                 SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(WeatherActivity.this).edit();
                 editor.putString("bing_pic",bingPic);
-                editor.apply();
+                editor.apply(); // 将背景图链接存到 SharedPreferences 中
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Glide.with(WeatherActivity.this).load(bingPic).into(bingPicImg);
+                        Glide.with(WeatherActivity.this).load(bingPic).into(bingPicImg);    // 用 Glide 加载图片
                     }
                 });
 
