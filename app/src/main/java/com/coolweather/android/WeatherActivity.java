@@ -190,7 +190,7 @@ public class WeatherActivity extends AppCompatActivity {
     }
 
     /**
-     * 加载必应每日一图
+     * 加载 必应 每日一图
      */
     private void loadBingPic(){
         String requestBingPic = "http://guolin.tech/api/bing_pic";
@@ -205,16 +205,14 @@ public class WeatherActivity extends AppCompatActivity {
                 final String bingPic = response.body().string();    // 获取背景图链接
                 SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(WeatherActivity.this).edit();
                 editor.putString("bing_pic",bingPic);
-                editor.apply(); // 将背景图链接存到 SharedPreferences 中
+                editor.apply(); // 将背景图链接存到SharedPreferences中
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         Glide.with(WeatherActivity.this).load(bingPic).into(bingPicImg);    // 用 Glide 加载图片
                     }
                 });
-
             }
         });
     }
-
 }
